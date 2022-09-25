@@ -31,6 +31,7 @@ class ClientImage(models.Model):
         # Open image using self
         img = Image.open(self.image.path)
 
+        # Crop image
         img = img.crop(crop_values)
 
         # Save image at the same path

@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-(b+o1i3v#5#_2*tazze3r9&^ff^cuxhx27@j5vj6f-p$bcry88'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
 
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'clients.apps.ClientsConfig',
     'weather.apps.WeatherConfig',
+    'memory.apps.MemoryConfig',
 ]
 
 MIDDLEWARE = [
@@ -192,3 +193,7 @@ SIMPLE_JWT = {
 # Setup mimetypes
 
 mimetypes.add_type("application/javascript", ".js", True)
+
+
+# YandexWeather API key (FREE TRIAL VERSION)
+WEATHER_KEY = 'df516d7e269a761fc75d7a21a3e92695'

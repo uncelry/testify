@@ -5,6 +5,7 @@ from clients.models import Client, ClientImage
 # Image model serializer
 class ClientImageSerializer(serializers.ModelSerializer):
 
+    # Image crop settings
     left = serializers.IntegerField(min_value=0)
     top = serializers.IntegerField(min_value=0)
     right = serializers.IntegerField(min_value=0)
@@ -14,15 +15,19 @@ class ClientImageSerializer(serializers.ModelSerializer):
         model = ClientImage
         fields = ('image', 'left', 'top', 'right', 'bottom')
 
+    # Custom validation
     def validate(self, attrs):
+        # Check if crop settings are valid
         if attrs['left'] >= attrs['right'] or attrs['top'] >= attrs['bottom']:
             raise serializers.ValidationError("Invalid crop settings")
         return attrs
 
+    # Custom representation
     def to_representation(self, instance):
         representation = {'image': self.get_image_url(ClientImage.objects.get(pk=instance.pk))}
         return representation
 
+    # Get image url path
     def get_image_url(self, image):
         request = self.context.get('request')
         photo_url = image.image.url
@@ -32,12 +37,14 @@ class ClientImageSerializer(serializers.ModelSerializer):
 # Client model serializer
 class ClientSerializer(serializers.ModelSerializer):
 
+    # Add custom field
     clientimage = ClientImageSerializer()
 
     class Meta:
         model = Client
         fields = '__all__'
 
+    # Add ClientImage to create method
     def create(self, validated_data):
         client_img = validated_data.pop('clientimage')
         crops = (client_img['left'], client_img['top'], client_img['right'], client_img['bottom'])
@@ -46,6 +53,7 @@ class ClientSerializer(serializers.ModelSerializer):
         image.save(crop_values=crops)
         return instance
 
+    # Add ClientImage to update method
     def update(self, instance, validated_data):
         client_img = validated_data.pop('clientimage')
         crops = (client_img['left'], client_img['top'], client_img['right'], client_img['bottom'])

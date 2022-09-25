@@ -2,5 +2,6 @@ from django import forms
 
 
 class GetWeatherForm(forms.Form):
-    city = forms.CharField(max_length=50, help_text='Город')
-    date = forms.DateField(help_text='Дата')
+    """Weather search input form"""
+    city = forms.CharField(max_length=50, label='Город (латиница)', widget=forms.TextInput(attrs={'placeholder': 'Moscow'}))
+    date = forms.DateField(label='Дата', widget=forms.DateInput(attrs={'placeholder': 'YYYY-MM-DD'}, format=('%Y-%m-%d')))
